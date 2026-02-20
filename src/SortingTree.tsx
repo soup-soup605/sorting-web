@@ -11,11 +11,6 @@ export default function SortingTree({ solved, setSolved, size, sequence }: {
   const [leftSelected, setLeftSelected] = useState(-1);
   const [rightSelected, setRightSelected] = useState(-1);
 
-  useEffect(() => {
-    setLeftSelected(-1);
-    setRightSelected(-1);
-  }, [sequence]);
-
   const [hasChildren, setHasChildren] = useState(false);
 
   const [leftSolved, setLeftSolved] = useState(false);
@@ -23,6 +18,13 @@ export default function SortingTree({ solved, setSolved, size, sequence }: {
 
   const [leftSequence, setLeftSequence] = useState<Array<Sequence>>([]);
   const [rightSequence, setRightSequence] = useState<Array<Sequence>>([]);
+
+  useEffect(() => {
+    setLeftSelected(-1);
+    setRightSelected(-1);
+    setLeftSolved(false);
+    setRightSolved(false);
+  }, [sequence]);
 
   useEffect(() => {
     if (leftSelected === -1 || rightSelected === -1 || leftSelected === rightSelected) {
@@ -37,8 +39,8 @@ export default function SortingTree({ solved, setSolved, size, sequence }: {
 
   useEffect(() => {
     if (sequence.length <= 1) setSolved(true);
-    else setSolved(leftSolved && rightSolved);
-  }, [sequence, leftSolved, rightSolved]);
+    else setSolved(leftSelected !== -1 && rightSelected !== -1 && leftSelected !== rightSelected && leftSolved && rightSolved);
+  }, [sequence, leftSelected, rightSelected, leftSolved, rightSolved]);
 
   return (
     <div>
